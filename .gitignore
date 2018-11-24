@@ -1,0 +1,11 @@
+.idea/*.xml
+.idea/copyright
+.idea/libraries
+.idea/shelf
+target
+out
+
+*.iml
+*.ipr
+*.iws
+*.zip

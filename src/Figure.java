@@ -1,10 +1,12 @@
-import java.awt.*;
-import java.util.ArrayList;
-
 public class Figure {
 
     int currentPosition = 1;
     char type;
+    int size;
+    int[][] matrix;
+    Part[] parts = new Part[4];
+    int dx;
+    int dy;
 
     class Part {
         int x;
@@ -16,96 +18,73 @@ public class Figure {
         }
     }
 
-    Part[] parts = new Part[4];
-
-    Figure() {
-    }
+    Figure() { }
 
     public void moveRight() {
-        for (Part part : parts) {
-            if (part.x < 9) part.x += 1;
-        }
+        boolean perm = true;
+        for (Part part : parts)
+            if (part.x + dx + 1 >= Field.WIDTH) {
+                perm = false;
+                break;
+            }
+        if (perm) dx++;
     }
 
     public void moveLeft() {
-        for (Part part : parts) {
-            if (part.x > 0) part.x -= 1;
-        }
+        if (dx > 0) dx--;
     }
 
     public void moveDown() {
-        for (Part part : parts) {
-            if (part.y > 0) part.y -= 1;
-        }
+        boolean perm = true;
+        for (Part part : parts)
+            if (part.y + dy + 1 >= Field.HEIGHT) {
+                perm = false;
+                break;
+            }
+        if (perm) dy++;
     }
+
 
     public void moveUp() {
+        if (dy > 0) dy--;
+    }
+
+    public void matrixToString() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++)
+                System.out.print(matrix[i][j] + " ");
+            System.out.println();
+        }
         for (Part part : parts) {
-            part.y += 1;
+            System.out.println(part.x + " " + part.y);
+            System.out.println(dx + " " + dy);
+            System.out.println();
         }
     }
 
-    public void rotateRight() {
-        switch (currentPosition) {
-            case 1:
-                rotate12();
-                break;
-            case 2:
-                rotate23();
-                break;
-            case 3:
-                rotate34();
-                break;
-            case 4:
-                rotate41();
-                break;
-            default:
-                throw new IllegalArgumentException();
+    public void transpose() {
+        if (dx <= Field.WIDTH - size && dy <= Field.HEIGHT - size) {
+            for (int i = 0; i < size / 2; i++)
+                for (int j = i; j < size - i - 1; j++) {
+                    int c = matrix[i][j];
+                    matrix[i][j] = matrix[size - j - 1][i];
+                    matrix[size - j - 1][i] = matrix[size - i - 1][size - j - 1];
+                    matrix[size - i - 1][size - j - 1] = matrix[j][size - i - 1];
+                    matrix[j][size - i - 1] = c;
+                }
+
+            int element = 0;
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
+                    if (matrix[i][j] == 1) {
+                        parts[element].x = i;
+                        parts[element].y = j;
+                        element++;
+                    }
+
+            currentPosition = (currentPosition + 1) % 4;
         }
     }
 
-    public void rotateLeft() {
-        switch (currentPosition) {
-            case 1:
-                rotate14();
-                break;
-            case 2:
-                rotate21();
-                break;
-            case 3:
-                rotate32();
-                break;
-            case 4:
-                rotate43();
-                break;
-            default:
-                throw new IllegalArgumentException();
-
-        }
-    }
-
-    public void rotate12() {
-    }
-
-    public void rotate23() {
-    }
-
-    public void rotate34() {
-    }
-
-    public void rotate41() {
-    }
-
-    public void rotate14() {
-    }
-
-    public void rotate21() {
-    }
-
-    public void rotate32() {
-    }
-
-    public void rotate43() {
-    }
 
 }
