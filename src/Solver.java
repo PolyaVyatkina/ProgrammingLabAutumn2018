@@ -7,7 +7,7 @@ public class Solver {
         Field extraFirst;
         Field extraSecond;
         Field bestField = new Field();
-        Double bestScore = -10000000.0;
+        Double bestScore = Double.MAX_VALUE * (-1.0);
         Heuristics heuristics;
 
         Figure firstFigure = random.nextFigure();
