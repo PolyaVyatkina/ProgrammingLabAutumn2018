@@ -55,5 +55,6 @@ public class Solver {
             field.toConsole();
             field.checkForGameOver();
         }
+        System.out.println("Game is over");
     }
 }
